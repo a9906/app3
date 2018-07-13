@@ -1,0 +1,484 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Micro serviço de gestão de utilizadores. \n",
+    "version" : "1.0.0",
+    "title" : "Users Active Directory API",
+    "termsOfService" : "http://swagger.io/terms/",
+    "contact" : {
+      "email" : "dmesquita@ipca.pt"
+    },
+    "license" : {
+      "name" : "Node.js 7.9",
+      "url" : "https://github.com/nodejs/node/blob/master/LICENSE"
+    }
+  },
+  "host" : "localhost:3000",
+  "basePath" : "",
+  "tags" : [ {
+    "name" : "Get Data",
+    "description" : "Retorno de dados"
+  }, {
+    "name" : "Insert Data",
+    "description" : "Inserção de dados"
+  } ],
+  "schemes" : [ "http","https"],
+  "paths" : {
+
+
+    "/users/{name}" : {
+      "get" : {      
+        "tags" : [ "Get Data" ],
+        "summary" : "Um utilizador",
+        "description" : "Listar um utilizador",
+        "operationId" : "userId",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "description" : "Nome do utilizador",
+          "required" : true,
+          "type" : "string"
+        }     
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "204" : {
+            "description" : "Nenhum utilizador encontrado..."
+          },
+          "400" : {
+            "description" : "ERROR"
+          }
+        }
+      }
+    },
+
+    
+    "/users/find/{name}" : {
+      "get" : {      
+        "tags" : [ "Get Data" ],
+        "summary" : "Encontrar utilizador",
+        "description" : "Encontrar um utilizador",
+        "operationId" : "userfind",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "description" : "Nome do utilizador",
+          "required" : true,
+          "type" : "string"
+        }     
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "204" : {
+            "description" : "Nenhum utilizador encontrado..."
+          },
+          "400" : {
+            "description" : "ERROR"
+          }
+        }
+      }
+    },
+
+
+    "/users" : {
+      "get" : {
+        "tags" : [ "Get Data" ],
+        "summary" : "All Users",
+        "description" : "Todos os utilizadores",
+        "operationId" : "users",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "204" : {
+            "description" : "The users doesn't exist!"
+          },
+          "400" : {
+            "description" : "Failed to get data..."
+          }
+        }
+      }
+    },
+
+    "/groups" : {
+      "get" : {
+        "tags" : [ "Get Data" ],
+        "summary" : "All Groups",
+        "description" : "Todos os grupos",
+        "operationId" : "groups",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "204" : {
+            "description" : "The users doesn't exist!"
+          },
+          "400" : {
+            "description" : "Failed to get data..."
+          }
+        }
+      }
+    },
+
+    "/addusers" : {
+      "post" : {
+        "tags" : [ "Insert Data" ],
+        "summary" : "Add User",
+        "description" : "Add new user",
+        "operationId" : "add_user",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {                     
+          "name" : "route_name",
+          "in" : "body",
+          "description" : "Nome atribuído à rota, por norma utiliza-se a origem e o destino juntos como nome.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "locals",
+          "in" : "body",
+          "description" : "Conjunto de ids dos pontos ordenados pelo sentido do trajeto. ex:2,4,6",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "name" : "description",
+          "in" : "body",
+          "description" : "Pequeno texto que descreve, indica ou instrui um processo a ser feito num determinado ponto. Sem a introdução de dados o sistema preenche com null. exSair na paragem,Entrar no autocarro",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "distances",
+          "in" : "body",
+          "description" : "Distância entre dois pontos, cada ponto indica a distância que demora a chegar ao próximo ponto. O ultimo ponto tem distância 0. ex,10,5,30",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Route Insert"
+          },
+          "400" : {
+            "description" : "Failed to Insert route"
+          }
+        }
+      }
+    },
+    "/insert_local" : {
+      "post" : {
+        "tags" : [ "Insert Data" ],
+        "summary" : "Insere um ponto",
+        "description" : "Insere um ponto para ser usado na criação de rotas",
+        "operationId" : "insert_local",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "description" : "Insere um ponto completo.",
+          "required" : true,
+          "schema" : {
+            "$ref": "#/definitions/Local"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Local Insert"
+          },
+          "400" : {
+            "description" : "Failed to Insert local"
+          }
+        }
+      }
+    },
+    "/insert_season" : {
+      "post" : {
+        "tags" : [ "Insert Data" ],
+        "summary" : "Insere um periodo",
+        "description" : "Insere um período",
+        "operationId" : "insert_season",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "period",
+          "in" : "body",
+          "description" : "Época no qual o período pertence.",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "name" : "season_date_begin",
+          "in" : "body",
+          "description" : "Data de inicio do período YYYY-MM-DD.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "season_date_end",
+          "in" : "body",
+          "description" : "Data final do período YYYY-MM-DD.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Season Insert"
+          },
+          "400" : {
+            "description" : "Failed to Insert season"
+          }
+        }
+      }
+    },
+    "/insert_schedule" : {
+      "post" : {
+        "tags" : [ "Insert Data" ],
+        "summary" : "Insere um horário",
+        "description" : "Insere um horário",
+        "operationId" : "insert_schedule",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "name_schedule",
+          "in" : "body",
+          "description" : "Nome dado ao horário.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "season",
+          "in" : "body",
+          "description" : "Ano letivo ao que o horário pertence.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "contact_id",
+          "in" : "body",
+          "description" : "Id de um contato já criado na base dados. Caso exista os seguintes pontos não se usam.",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "email",
+          "in" : "body",
+          "description" : "Email da transportadora ou instituição para esclarecimento de dúvidas pontos não se usam.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "phone",
+          "in" : "body",
+          "description" : "Telefone ou telemóvel da transportadora ou instituição.",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "website",
+          "in" : "body",
+          "description" : "Hiperligação do website da transportadora ou instituição para consulta dos horários completos e para a obtenção de mais informações.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Schedule Insert"
+          },
+          "400" : {
+            "description" : "Failed to Insert schedule"
+          }
+        }
+      }
+    },
+    "/insert_timetable" : {
+      "post" : {
+        "tags" : [ "Insert Data" ],
+        "summary" : "Insere uma tabela horária",
+        "description" : "Insere uma tabela no horário",
+        "operationId" : "insert_timetable",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "hours",
+          "in" : "body",
+          "description" : "Horas do horário.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "locals",
+          "in" : "body",
+          "description" : "Pontos da tabela.",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "name" : "type_day",
+          "in" : "body",
+          "description" : "Refere-se aos dias uteis, domingos e sábados.",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "name" : "route",
+          "in" : "body",
+          "description" : "Rota para esta tabela.",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "name" : "season",
+          "in" : "body",
+          "description" : "Periodo a que pretende esta tabela.",
+          "required" : true,
+          "type" : "integer"
+        }, {
+          "name" : "schedule",
+          "in" : "body",
+          "description" : "Horário referente a esta tabela.",
+          "required" : true,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "All Insert"
+          },
+          "400" : {
+            "description" : "Error to insert timetable"
+          }
+        }
+      }
+    },
+    "/price_insert" : {
+      "post" : {
+        "tags" : [ "Insert Data" ],
+        "summary" : "Insere um preço",
+        "description" : "Insere um preço",
+        "operationId" : "price_insert",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "price",
+          "in" : "body",
+          "description" : "Preço do bilhete em decimal.",
+          "required" : true,
+          "type" : "number"
+        }, {
+          "name" : "route",
+          "in" : "body",
+          "description" : "Rota onde o preço pretence.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "scale_km_begin",
+          "in" : "body",
+          "description" : "Inicio da escala em quilometro para obter um preço.",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "scale_km_end",
+          "in" : "body",
+          "description" : "Fim da escala em quilometro.",
+          "required" : false,
+          "type" : "number"
+        }, {
+          "name" : "description",
+          "in" : "body",
+          "description" : "Descrição do preço.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "price_id",
+          "in" : "body",
+          "description" : "Id de um preço já criado na base dados.",
+          "required" : false,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Price Insert"
+          },
+          "400" : {
+            "description" : "Failed to Insert price"
+          }
+        }
+      }
+    },
+
+    "/type_day_insert" : {
+      "post" : {
+        "tags" : [ "Insert Data" ],
+        "summary" : "Insere um tipo de dia",
+        "description" : "Insere um tipo de dia",
+        "operationId" : "type_day_insert",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "description" : "Tipo de dia.",
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Type Day Insert"
+          },
+          "400" : {
+            "description" : "Failed to Insert type day"
+          }
+        }
+      }
+    },
+
+    "/period_insert" : {
+      "post" : {
+        "tags" : [ "Insert Data" ],
+        "summary" : "Insere uma época",
+        "description" : "Insere uma época do ano",
+        "operationId" : "period_insert",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "description" : "Época.",
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Type Day period"
+          },
+          "400" : {
+            "description" : "Failed to Insert period"
+          }
+        }
+      }
+    }
+
+  },
+  "definitions" : {
+    "Local" : {
+      "type" : "object",
+      "properties" : {
+        "latitude" : {
+          "type" : "number"
+        },
+        "longitude" : {
+          "type" : "number"
+        },
+        "local" : {
+          "type" : "string"
+        },
+        "zone" : {
+          "type" : "string"
+        },
+        "address" : {
+          "type" : "string"
+        },
+        "institute" : {
+          "type" : "boolean",
+          "description" : "Se é ponto do instituto"
+        }
+      },
+      "example" : {
+        "latitude" : 41.538095,
+        "longitude" : -8.627057,
+        "local" : "São Martinho",
+        "zone" : "Barcelos",
+        "address" : "Rua da Devesa, Nº 355",
+        "institute" : 0
+      },
+      "xml" : {
+        "name" : "Local"
+      }
+    }
+  }
+}
