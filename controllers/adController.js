@@ -58,7 +58,12 @@ var config = require('../config/configAD.js');
 
 var reject = require('reject');
 var assert = require('assert');
+
 var helper = require('../lib/helper');
+
+var resultado = {};
+//var fileName = 'mynewfile1.txt';
+
 
 exports.getAllUsers = function(req, res){
 	var users = usersHelper.getAllUsers(); 
@@ -102,11 +107,20 @@ exports.getAllGroups = function (req, res){
 }
 
 exports.getAllUsersAD = function (req, res){
-    var ad = new adt(config);
+	var ad = new adt(config);
+	var callback;
+	var functionName = 'addUser';
 	//var username = req.params['id'];
     ad.findUsers(false, function(err, obj) {
-      if (err) return(err );
-      console.dir(obj);	  
+      if (err) {
+		    //resultado.addresult = 'Error on the Users list...';
+			helper.logToFile(err, callback);
+		  	return(err );
+	  }
+	  console.dir(obj);	 
+	  resultado.functionName = functionName;
+	  resultado.addresult = 'Users listed...';
+	  helper.logToFile(resultado, callback);
 	  res.json(obj);
 	}
   );
@@ -270,7 +284,7 @@ exports.getAllUsersAD = function (req, res){
 
 exports.addUser  = function(req, res){
 
-
+	var functionName = 'addUser';
 	/* exemplos....
 	var a = options.a !== undefined ? options.a : "nothing";
 	var b = options.b !== undefined ? options.b : "nothing";
@@ -283,7 +297,7 @@ document.getElementById("demo").innerHTML = x;
 */
 
 
-var resultado = {};
+
 // Add User...
 //exports.addUser = () => {
 //return new Promise((resolve, reject) => {
@@ -389,10 +403,12 @@ var resultado = {};
 			console.log(err);
 			resultado.addresult = 'Erro...';
 			resultado.addmsg = (err);
+			helper.logToFile(resultado, callback);
 			res.send(JSON.stringify(resultado));
 		}else{
-			console.log("Add Success...");
+			console.log("Add Success...");	
 			resultado.addresult = 'Adicionado com sucesso.';
+			helper.logToFile(resultado, callback);
 			//res.send(JSON.stringify(entry7));
 			res.send(JSON.stringify(resultado));
 		
@@ -410,7 +426,7 @@ var resultado = {};
 	
 }
 
-// Delete User
+// Delete User... a funcionar
 //exports.deleteUser = () => {
 //	return new Promise((resolve, reject) => {
 exports.deleteUser  = function(req, res){
